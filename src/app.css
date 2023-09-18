@@ -1,0 +1,31 @@
+nav{
+    background: purple;
+    padding: 1em ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+nav a{
+    color: white;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+
+.register-form input{
+    height: 40px;
+}
+
+.register-form select {
+    height: 40px;
+}
+
+.register-form button {
+    height: 40px;
+}
+
+form input{
+    height: 40px;
+}
