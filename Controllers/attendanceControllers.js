@@ -209,4 +209,25 @@ const addAttendance = async (req, res) => {
     }
 
 }
-module.exports = { addAttendance };
+
+
+
+const deleteAttendance = async( req, res)=> {
+    try {
+        const id = req.params.id
+    let finding = await previousAttendanceModel.findOne()
+        const indexToRemove = await finding.previousAttendances.findIndex(data => data._id.toString() === id)
+        if (indexToRemove === -1) {
+            return res.status(404).send({error:"Record not found"})
+        }
+        finding.previousAttendances.splice(indexToRemove, 1)
+        await finding.save()
+        return res.status(200).send(finding)
+            
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).send("Server error")
+    }
+}
+module.exports = { addAttendance, deleteAttendance };
