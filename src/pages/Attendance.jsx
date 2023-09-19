@@ -17,7 +17,7 @@ const Attendance = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3500/api/v1/members/getMembers",
+          "https://attendance-cpsk.onrender.com/api/v1/members/getMembers",
           {
             headers: {
               authorization: `Bearer ${token}`,
@@ -60,7 +60,7 @@ const Attendance = () => {
       abashyitsi,
     };
     const res = await axios.post(
-      "http://localhost:3500/api/v1/attendance/addAttendance",
+      "https://attendance-cpsk.onrender.com/api/v1/attendance/addAttendance",
       formdata,
       {
         headers: {
