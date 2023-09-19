@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import axios from "axios"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { AiFillEye } from "react-icons/ai"
+import { AiFillEyeInvisible } from "react-icons/ai"
 import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { useNavigate } from 'react-router-dom'
 const Login = () => {
@@ -13,6 +14,7 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
     const [isLoading,setIsLoading]  = useState(false)
+const [showPassword,setShowPassword]  = useState(false)
     const handleSubmit = async (e) => {
 
         e.preventDefault()
@@ -23,46 +25,32 @@ const Login = () => {
 
         try {
           setIsLoading(true)
-          const res = await axios.post("https://church-attendance.onrender.com/api/v1/admin/loginAdmin", formData)
+          const res = await axios.post("http://localhost:3500/api/v1/admin/loginAdmin", formData)
         
             if (res.data) {
-            //   setIsLoading(false)
               if (res.data.error) {
                   setError(res.data.error)
-                  toast.error(res.data.error, {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "light",
-                  })
+                  toast.error(res.data.error)
                   setIsLoading(false)
               } else {
                   localStorage.setItem("token", JSON.stringify(res.data.token))
                   setEmail("")
                   setPassword("")
                   setError("")
-                  toast.success("Logged in successfully", {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
-                      theme: "light",
-                  })
+                  
 
+                  
                   setIsLoading(false)
+                  toast.success("Logged in successfully")
+                  setTimeout(() => {
+                    navigate("/users")
+                   }, 2000);
+                }
+            }
                 
-                  navigate("/users")
-          }
-          }
-
+                 
          
+
 
         
       } catch (error) {
@@ -74,8 +62,20 @@ const Login = () => {
         <div className='form-container'>
             <form>
                 <input type="email" name='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Enter the email' />
-                <input type="password" name='password' value={password} onChange={(e) => setPassword(e.target.value)} placeholder='Enter the password' />
-                {/* <Button loading={isLoading} variant='contained' onClick={handleSubmit}>Login</Button> */}
+                <div className='input-class' style={{ display: 'flex', alignItems: 'center', height: "60px",  borderRadius:"10px" ,paddingTop: "none", marginTop: "1em", background:"rgb(245, 241, 241)"}}>
+                    <input
+                        type={showPassword? "text":"password"}
+                        name="password"
+            
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter the password"
+                        style={{ flex: 1, marginRight: '8px'  }} 
+                    />
+                    {showPassword ? <AiFillEyeInvisible onClick={() => setShowPassword(false)} style={{ marginRight: "1em" }} /> : <AiFillEye style={{ marginRight: "1em" }} onClick={() => setShowPassword(true)} />
+ }
+                </div>
+
                 <LoadingButton  
                     className='mui-button'
                     color="secondary"
@@ -90,7 +90,7 @@ const Login = () => {
                 <a href="/register" style={{textDecoration:"none", paddingTop:"1em"}}>Don't have an account? Please sign up</a>
 
             </form>
-            <ToastContainer />
+            <Toaster />
                 
         </div>
     )

@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import axios from "axios"
 import { useNavigate } from 'react-router-dom'
+
 const Homepage = () => {
   const [userDatas, setUserData] = useState()
   const [errorMessage,setErrorMessage] = useState("")
   const token = JSON.parse(localStorage.getItem("token"))
+  const [loading, setLoading] = useState(true)
   const fetchData = async () => {
-    const res = await axios.get("https://church-attendance.onrender.com/api/v1/members/getMembers",
+    const res = await axios.get("http://localhost:3500/api/v1/members/getMembers",
       {
       headers: {
         authorization:`Bearer ${token}`
@@ -18,17 +20,24 @@ const Homepage = () => {
     if (res.data) {
       if (res.data.message) {
         setErrorMessage(res.data.message)
+        setLoading(false)
+
       } else {
         setUserData(res.data)
-       
+        setLoading(false)
+
       } 
+
+
     } 
 
       
     
   }
   useEffect(() => {
-   fetchData()
+setTimeout(() => {
+  fetchData();
+}, 1000);
   }, [])
   const navigate= useNavigate()
   const handleClick = () => {
@@ -36,14 +45,16 @@ const Homepage = () => {
   }
 
 
-  const handleDelete = async(id) => {
-    const res = await axios.delete("https://church-attendance.onrender.com/api/v1/members/deleteMember/" + id, {
+  const handleDelete = async (id) => {
+
+    const res = await axios.delete("http://localhost:3500/api/v1/members/deleteMember/" + id, {
       headers: {
         authorization: `Bearer ${token}`
       }
     })
     if (res.data) {
-window.location.reload()
+      window.location.reload()
+      
     }
   }
 
@@ -54,7 +65,11 @@ window.location.reload()
   }
   return (
 
-  <>
+    <>
+      
+      {loading && loading && <div className="loading-spinner-container">
+        <div className="loading-spinner"></div>
+      </div>}
       {userDatas && <div>
         <Navbar />
         <div className="home-container">
@@ -96,6 +111,7 @@ window.location.reload()
           </table>
 
           <button className='value-1' onClick={handleClick}>Add New User</button>
+          
         </div>
       </div>}
   </>

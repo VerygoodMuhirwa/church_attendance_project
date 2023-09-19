@@ -1,5 +1,4 @@
 nav{
-    background: purple;
     padding: 1em ;
     display: flex;
     flex-direction: row;
@@ -10,7 +9,7 @@ nav{
 nav a{
     color: white;
     text-decoration: none;
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 
@@ -28,4 +27,24 @@ nav a{
 
 form input{
     height: 40px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Apply the animation to an element */
+.loading-spinner {
+    margin: 0 auto ;
+  border: 4px solid rgba(0, 0, 0, 0.3);
+  border-top: 4px solid #007bff; /* Blue color */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite; /* Use the "spin" animation */
+}
+
+.loading-spinner-container{
+    padding-top: 20vh;
 }

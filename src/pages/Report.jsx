@@ -8,22 +8,27 @@ const Report = () => {
 
     const token= JSON.parse(localStorage.getItem("token"))
     const [userDatas, setUserData] = useState()
+    const [loading,setLoading] = useState(true)
     const fetchData = async () => {
-        const res = await axios.get("https://church-attendance.onrender.com/api/v1/reports/getReport", {
+        const res = await axios.get("http://localhost:3500/api/v1/reports/getReport", {
             headers: {
                 authorization: `Bearer ${token}`
             }
         })
         if (Array.isArray(res.data)) {
+            setLoading(false)
 return
         } else {
             setUserData(res.data)
+            setLoading(false)
       }
        
 
     }
     useEffect(() => {
-        fetchData()
+setTimeout(() => {
+    fetchData();
+}, 1000);
     }, [])
 
     const navigate = useNavigate()  
@@ -142,7 +147,7 @@ return
                                             <td>{data.yize7}%</td>
 
                                         </tr>
-                                    </>
+                                    </>                                                                                                                                                                                                                                                                                                                                                                                                                         
                                 )
                             })}              
               </tbody>
@@ -160,10 +165,8 @@ return
             ) : (
                     <>
                         <Navbar />
-
-                        <div className='notFound'>
-
-                            <span>No attendance found 👍</span>
+                        <div className="loading-spinner-container">
+                            <div className="loading-spinner"></div>
                         </div>
                     
                     </>

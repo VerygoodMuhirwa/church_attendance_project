@@ -24,7 +24,7 @@ const MakeAttendance = () => {
         }
         console.log(family);
         console.log(Class);
-        const res = await axios.post("https://church-attendance.onrender.com/api/v1/members/addMember", formData, {
+        const res = await axios.post("http://localhost:3500/api/v1/members/addMember", formData, {
             headers: {
                 authorization:`Bearer ${token}`
             }
