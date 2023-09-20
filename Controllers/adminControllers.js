@@ -29,7 +29,6 @@ const {email, password}  = req.body
      const userExists = await adminModel.findOne({ email });
      if (userExists)
        return res.status(200).send({error:"The user with that email already exists"});
-
      const salt = await bcrypt.genSalt(10);
      const hashedPassword = await bcrypt.hash(password, salt);
      const admin = await adminModel.create({ email, password: hashedPassword });
@@ -49,7 +48,7 @@ const loginAdmin=  async (req, res) => {
     try {
       const { email, password } = req.body
         const userExists = await adminModel.findOne({ email })
-      if (!userExists) return res.status(200).send("Invalid password or email")
+      if (!userExists) return res.status(200).send({error: "Invalid password or email"})
       const isCompared = await bcrypt.compare( password , userExists.password)
         if (!isCompared)return res.status(200).send({error:"Invalid password or email"})
         const Token = await generateAuthToken(userExists._id)
